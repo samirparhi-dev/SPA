@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Catalyst ! </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: #0b0d89;
+        }
+
+        header {
+        background: linear-gradient(to right, #f0f0f0, #dcdcdc);
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        }
+
+        main {
+            padding: 100px; 
+        }
+
+        footer {
+            background: linear-gradient(to right, #f0f0f0, #dcdcdc);
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #004aad;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Catalyst !</h1>
+        <h3>I am quite young, you can help me get the experience </h3>
+    </header>
+
+    <main>
+        <form>
+          <h3> Sign your Blob/Containers/artefact using Cosign</h3>
+          <div>
+          <label for="gname">Github Repo Name:</label><br>
+          <input type="text" id="gname"><br>
+          </div>
+          <div>
+          <label for="fname">Enter the File Name or path/to/fileName which has to be signed:</label><br>
+          <input type="text" id="fname" name="file_to_path"><br>
+          </div>
+          <div>
+          <label for="lname">Enter the Output signature file Name or Path/to/fileName:</label><br>
+          <input type="text" id="lname" name="output_sign_place"><br>
+          </div>
+          <fieldset>
+             <legend>Would you like to Verify the Signature Now ?</legend>
+              <div>
+                <input type="radio" id="option_yes" name="yes" value="yes" checked />
+                <label for="huey">yes</label>
+              </div>
+              <div>
+                <input type="radio" id="option_no" name="no" value="no" />
+                <label for="dewey">No</label>
+              </div>
+          </fieldset>
+            <div>
+              <label for="lname"> Would you like to Verify the Signature Now ?</label><br>
+              <input type="text" id="lname" name="verify_sign"><br>
+            </div>
+            <div>  
+              <button onclick="triggerWorkflow()"> Start </button><br>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; Little Push to your Productivity By Catalyst :-) </p>
+    </footer>
+
+    <script>
+        function triggerWorkflow() {
+            // Replace 'YOUR_REPOSITORY_NAME' with your actual repository name
+            const repository = 'YOUR_REPOSITORY_NAME';
+            
+            // Define the GitHub API endpoint to trigger the workflow_dispatch event
+            const apiEndpoint = `https://api.github.com/repos/${repository}/actions/workflows/workflow.yml/dispatches`;
+
+            // Replace 'YOUR_PERSONAL_ACCESS_TOKEN' with your GitHub Personal Access Token
+            const token = 'YOUR_PERSONAL_ACCESS_TOKEN';
+
+            // Get user input
+            const userInput = document.getElementById('userInput').value;
+
+            // Make a POST request to trigger the workflow with user input
+            fetch(apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    ref: 'main', // Replace with your branch name
+                    inputs: {
+                        user_input: userInput
+                    }
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                alert('Your Action started successfully!');
+            })
+            .catch(error => {
+                console.error('Oops Something wrong, Can you send Request again please :', error);
+                alert('It could be some Maping glitch. please Check the console for details :-)');
+            });
+        }
+    </script>
+</body>
+</html>

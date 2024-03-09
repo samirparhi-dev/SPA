@@ -1,0 +1,13 @@
+
+# For Rust
+hack/src/target/
+hack/Cargo.lock
+Cargo.toml.orig
+.rust*
+
+# VS Code
+.vscode/
+.DS_Store
+
+#for Sonar Scanner
+accelarator/.scannerwork
