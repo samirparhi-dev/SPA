@@ -18,7 +18,7 @@ spec:
       annotations:
         container.apparmor.security.beta.kubernetes.io/kubeaudit: runtime/default
     spec:
-      serviceAccountName: kubeaudit
+      serviceAccountName: default
       restartPolicy: OnFailure
       securityContext:
         seccompProfile:
