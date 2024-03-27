@@ -10,7 +10,7 @@ spec:
         app: kube-bench
     spec:
       containers:
-        - command: ["kube-bench"]
+        - command: ["kube-bench", "--output=json"]
           image: docker.io/aquasec/kube-bench:v0.7.2
           name: kube-bench
           volumeMounts:
