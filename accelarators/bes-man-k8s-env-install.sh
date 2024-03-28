@@ -48,50 +48,54 @@ fi
 #### Checking for kind 
 
 if command -v kind &> /dev/null; then
-    echo -e "\n ${BLUE} Found Kind. 😊\n let's check if it is Active🏃🏻‍➡️..."${RESET}
+    echo -e "${BLUE} Found Kind. 😊\nlet's check if it is Active🏃🏻‍➡️..."${RESET}
 
     if kind get nodes 2>&1 | grep -q "No kind nodes found for cluster"; then
-        echo -e "\n ${BLUE} No kind Cluster found 🤔, No Worries Creating one 🛠️"${RESET}
+        echo -e "\n${BLUE}No kind Cluster found 🤔, No Worries Creating one 🛠️"${RESET}
 
         kind create cluster
         sleep 30
 
         while true; do
             if kind get nodes 2>&1 | grep -q "kind-control-plane"; then
-                echo -e "\n ${BLUE} ✅ Kind Cluster is not Ready to serve 🍦 ! \n
-                Checking for Kubernetes distribution."${RESET}
+                echo -e "\n${BLUE} ✅ Kind Cluster is not Ready to serve 🍦 ! \nChecking for Kubernetes distribution."${RESET}
                 break
             fi
             sleep 1
         done
     fi
 else
-    echo -e "\n ${BLUE} Kind Not Found. ☹️ \n Kindly Install KIND. Here is the Documentation : https://kind.sigs.k8s.io/docs/user/quick-start/"${RESET}
+    echo -e "\n${BLUE} Kind Not Found. ☹️ \nKindly Install KIND. Here is the Documentation : https://kind.sigs.k8s.io/docs/user/quick-start/"${RESET}
 fi
 
 #### Checking for kubectl
 
 if  command -v kubectl &> /dev/null; then
-    echo -e "\n ${BLUE} Kubectl Installed 😊\n You are all set to Explore Containerrised app using Kind 🎬..."${RESET}
+    echo -e "\n${BLUE}Kubectl Installed 😊\nYou are all set to Explore Containerrised app using Kind 🎬..."${RESET}
 
 else
-    echo -e "\n ${BLUE} Kubectl is not Installed. ☹️ \n Please install it. Here is the Documentation : https://kind.sigs.k8s.io/docs/user/quick-start/"${RESET}
+    echo -e "\n ${BLUE}Kubectl is not Installed. ☹️ \nPlease install it. Here is the Documentation : https://kind.sigs.k8s.io/docs/user/quick-start/"${RESET}
 fi
 
 ### Prerequisite Check Done
-echo -e "\n ${BOLD}${BLUE} All Prerequisites are Satified ! all set to Run Bes Playbook."${RESET}
+echo -e "\n${BOLD}${BLUE} All Prerequisites are Satified ! all set to Run Bes Playbook."${RESET}
 
 ### Installing kubeBench
-echo -e "\n ${BOLD}${BLUE} Initiating BeS Playbook for KubeBench.."${RESET}
+echo -e "\n${BOLD}${BLUE} Initiating BeS Playbook for KubeBench.."${RESET}
 
-echo -e "\n ${BLUE} Creating BeSecure Namespace"${RESET}
+echo -e "\n${BLUE} Creating BeSecure Namespace"${RESET}
 kubectl create ns besecure
+sleep 10
 
 if [ $? -eq 0 ]; then
-    echo -e "\n ${BLUE} Creating Kube bench job in BeSecure Namespace"${RESET}
+    echo -e "\n${BLUE}Creating Kube bench job in BeSecure Namespace"${RESET}
     kubectl apply -f https://raw.githubusercontent.com/samirparhi-dev/kube-bench/main/job.yaml -n besecure
     sleep 30
-    
+    kubectl get jobs -n besecure
+    if [ $? -eq 0 ]; then
+        echo -e "\n ${BLUE}Displaying the Report. This Might Not be As fancy as you think but Useful 📊\n"${RESET}
+        
 else
-    echo -e "\n ${BLUE} Could not able to Create NameSpace , Try Again"${RESET}
+    echo -e "\n ${BLUE}Could not able to Create NameSpace , Try Again"${RESET}
 fi
+echo -e "\n${BOLD}${BLUE}Thank you SoMuch for Usin BeS tool.\n You can Share your thoughts and Improvements by creating PRs on out GitHub.https://github.com/Be-Secure/BeSman"${RESET}
